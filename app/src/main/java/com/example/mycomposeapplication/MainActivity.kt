@@ -128,7 +128,7 @@ fun logged(userID: String, password: String, context: Context) {
         //take token and go to next page
         rawJSON(userID,password,context)
     }
-    //goToHomePage(context)
+    goToHomePage(context)
 
 }
 
