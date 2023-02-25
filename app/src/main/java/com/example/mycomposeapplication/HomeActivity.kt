@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 class HomeActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var books = arrayListOf<Book>()
@@ -40,7 +41,7 @@ class HomeActivity : ComponentActivity() {
 
         setContent {
             MyHomeUI(books){
-                Toast.makeText(this,"Book ${it.id}",Toast.LENGTH_SHORT).show()
+
                 Log.i("testList",books[it.id].toString())
                 val bookPosition = books.indexOf(it)
                 Log.i("Book Title",it.title)
@@ -48,8 +49,10 @@ class HomeActivity : ComponentActivity() {
                 val updatedBook = books[bookPosition].apply {
                     if(imageURL == urlA){
                         it.imageURL = urlB
+                        Toast.makeText(applicationContext,"Delete Book ${it.title}",Toast.LENGTH_SHORT).show()
                     }else{
                         it.imageURL = urlA
+                        Toast.makeText(applicationContext,"Downloading Book ${it.title}",Toast.LENGTH_SHORT).show()
                     }
                 }
                 //changes image but not refresh view

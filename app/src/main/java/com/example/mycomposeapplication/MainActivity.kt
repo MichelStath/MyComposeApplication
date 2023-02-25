@@ -8,10 +8,8 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -60,7 +58,8 @@ fun LoginUI(context: Context) {
     Column (
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp),
+            .fillMaxHeight()
+            .background(Color.DarkGray),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -70,7 +69,7 @@ fun LoginUI(context: Context) {
             textAlign = TextAlign.Center,
             fontSize = 40.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Red,
+            color = Color.White,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 20.dp)
@@ -79,7 +78,7 @@ fun LoginUI(context: Context) {
         OutlinedTextField(
             value = userID,
             onValueChange = {userID = it},
-            label = {Text ("Enter Your userID")},
+            label = {Text ("Enter Your userID") },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Green,
                 unfocusedBorderColor = Purple200),
@@ -107,14 +106,16 @@ fun LoginUI(context: Context) {
         OutlinedButton(
             onClick = { logged(userID,password,context)},
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 10.dp, top = 10.dp),
+                .width(188.dp)
+                .padding(bottom = 20.dp, top = 300.dp)
+                .height(49.dp)
+                .background(Color.DarkGray),
             shape = CircleShape,
-            border = BorderStroke(2.dp,
-            Color.Green))
+            border = BorderStroke(2.dp, Color.Green))
         {
             Text(
                 text = "Login",
+                color = Color.Green,
                 textAlign = TextAlign.Center)
         }
 
@@ -128,8 +129,6 @@ fun logged(userID: String, password: String, context: Context) {
         //take token and go to next page
         rawJSON(userID,password,context)
     }
-    goToHomePage(context)
-
 }
 
 fun checkPassFormat(password: String, context: Context):Boolean {
@@ -150,7 +149,7 @@ fun checkUserIDFormat(userID: String, context: Context):Boolean {
     //"[A-Z]{2}\d{4}" && length=6
     var pattern = Regex("[A-Z]{2}\\d{4}")
     var resultt = pattern.containsMatchIn(userID)
-    //Log.i("test ergex",resultt.toString())
+    //Log.i("test regex",resultt.toString())
     if(userID.length == 6 && resultt){
         Log.i("UserID Format","UserID Correct Format")
         return  true
@@ -178,7 +177,7 @@ fun rawJSON(clientID: String, clientSecret: String,context: Context){
 
     // Convert JSONObject to String
     val jsonObjectString = jsonObject.toString()
-    // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
+    // Create RequestBody
     val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
 
     CoroutineScope(Dispatchers.IO).launch {
@@ -187,7 +186,6 @@ fun rawJSON(clientID: String, clientSecret: String,context: Context){
 
         withContext(Dispatchers.Main) {
             if (response.isSuccessful) {
-
                 // Convert raw JSON to pretty JSON using GSON library
                 val gson = GsonBuilder().setPrettyPrinting().create()
                 val prettyJson = gson.toJson(
@@ -196,7 +194,7 @@ fun rawJSON(clientID: String, clientSecret: String,context: Context){
                             ?.string()
                     )
                 )
-                //toast token
+                //take request values
                 val jsonObject = JSONTokener(prettyJson).nextValue() as JSONObject
                 val access_token = jsonObject.getString("access_token")
                 val refresh_token = jsonObject.getString("refresh_token")
