@@ -1,5 +1,4 @@
 # MyComposeApplication
-# **README**
 ## Login 
 * **Username format check with ReGex** < *2 Capital + 4 Numbers in Correct order*>
 
