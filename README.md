@@ -22,6 +22,6 @@ if username/password are in wrong format,Toast message will inform the user
 
 
 ### Comments    
-> First time using Kotlin and Jetpack Compose.
-> Tried to make Login UI as similar as provited.
+> First time using Kotlin and Jetpack Compose.  
+> Tried to make Login UI as similar as provited.    
 > Homepage UI made it difficult for me so i tried to make it functional.(Doesn't have the expected layout)
